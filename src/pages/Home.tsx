@@ -11,11 +11,13 @@ import {
   IonTitle,
   IonToolbar,
   IonIcon,
+  IonFabButton,
+  IonFab,
 } from "@ionic/react";
 import "./Home.css";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
-import { addOutline } from "ionicons/icons";
+import { addOutline, trashOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -24,7 +26,7 @@ const Home: React.FC = () => {
   const [notes, setNotes] = useState<any[]>([]);
 
   const currentUser = JSON.parse(localStorage.getItem("user")!);
-  if (!currentUser) history.push("/login");
+  if (!currentUser) history.replace("/login");
 
   useEffect(() => {
     const temp: any[] = [];
@@ -42,7 +44,12 @@ const Home: React.FC = () => {
   }, []);
 
   const btnClickHandler = () => {
-    history.push("/create");
+    history.replace("/create");
+  };
+
+  const btnRemoveHandler = async (noteId: any) => {
+    await deleteDoc(doc(db, currentUser.uid, noteId));
+    window.location.reload();
   };
 
   return (
@@ -58,17 +65,27 @@ const Home: React.FC = () => {
           {notes.map((note) => (
             <IonCard key={note.id}>
               <IonCardHeader>
+                <IonFab vertical="top" horizontal="end">
+                  <IonFabButton
+                    color="red"
+                    onClick={() => btnRemoveHandler(note.id)}
+                    size="small"
+                    className="close-btn"
+                  >
+                    <IonIcon icon={trashOutline}></IonIcon>
+                  </IonFabButton>
+                </IonFab>
                 <IonCardTitle>{note.title}</IonCardTitle>
               </IonCardHeader>
               <IonCardContent>{note.content}</IonCardContent>
             </IonCard>
           ))}
         </IonList>
-        <div className="add-btn-container">
-          <IonButton shape="round" onClick={btnClickHandler}>
+        <IonFab slot="fixed" vertical="bottom" horizontal="end">
+          <IonFabButton onClick={btnClickHandler}>
             <IonIcon icon={addOutline}></IonIcon>
-          </IonButton>
-        </div>
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );

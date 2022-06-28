@@ -31,7 +31,7 @@ const Login: React.FC = () => {
       .then((response) => {
         localStorage.setItem("user", JSON.stringify(response.user));
         setErrMessage("");
-        history.push("/home");
+        history.replace("/home");
       })
       .catch((err) => setErrMessage(err));
   };

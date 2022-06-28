@@ -45,7 +45,7 @@ const Register: React.FC = () => {
       createUserWithEmailAndPassword(auth, email, password).then(({ user }) => {
         localStorage.setItem("user", JSON.stringify(user));
         console.log(user);
-        history.push("/home");
+        history.replace("/home");
       });
     }
   };
