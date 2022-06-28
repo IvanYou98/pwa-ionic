@@ -15,7 +15,7 @@ import {
 import "./Login.css";
 import { keyOutline, mailOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -45,6 +45,7 @@ const Register: React.FC = () => {
       createUserWithEmailAndPassword(auth, email, password).then(({ user }) => {
         localStorage.setItem("user", JSON.stringify(user));
         console.log(user);
+        history.push("/home");
       });
     }
   };
