@@ -16,7 +16,11 @@
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/assets/icon/favicon.png" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="%PUBLIC_URL%/assets/icon/favicon.png"
+    />
 
     <!-- add to homescreen for ios -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -26,6 +30,15 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./sw.js")
+            .then((reg) => console.log("Success:", reg.scope))
+            .catch((err) => console.log("Failure:", err));
+        });
+      }
+    </script>
   </body>
-
 </html>

@@ -40,6 +40,9 @@ const App: React.FC = () => (
         <Route exact path="/home">
           <Home />
         </Route>
+        <Route exact path="/">
+          <Home />
+        </Route>
         <Route exact path="/create">
           <Create />
         </Route>
